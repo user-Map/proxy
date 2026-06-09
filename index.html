@@ -3,349 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PROXY VIP</title>
+    <title>Đăng Nhập - Proxy Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
-        input { -webkit-user-select:text; -moz-user-select:text; -ms-user-select:text; user-select:text; }
-        body { background:#0f172a; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-200 min-h-screen">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <!-- ========== MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ ========== -->
-    <div id="auth-screen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 w-full max-w-md shadow-xl">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white shadow-lg">
-                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+    <div class="w-full max-w-md">
+        <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fa-solid fa-user-secret text-3xl text-white"></i>
                 </div>
-                <h2 class="text-xl font-bold text-white">PROXY VIP</h2>
-                <p class="text-xs text-slate-400 mt-1">Đăng nhập hoặc tạo tài khoản mới</p>
+                <h2 class="text-2xl font-bold text-gray-800">Proxy Store</h2>
+                <p class="text-xs text-gray-400 mt-1">Tài khoản Proxy chất lượng cao</p>
             </div>
 
-            <form id="auth-form" class="space-y-4" autocomplete="off">
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Email</label>
-                    <input type="email" id="auth-email" required class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500" placeholder="you@gmail.com">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Mật khẩu</label>
-                    <input type="password" id="auth-password" required class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500" placeholder="••••••••">
-                </div>
-                <div class="flex gap-2">
-                    <button type="button" onclick="handleLogin()" class="flex-1 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 active:scale-95 text-white rounded-xl font-bold text-sm cursor-pointer">
-                        <i class="fa-solid fa-right-to-bracket mr-1.5"></i> Đăng Nhập
-                    </button>
-                    <button type="button" onclick="handleRegister()" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 active:scale-95 text-white rounded-xl font-bold text-sm cursor-pointer border border-slate-700">
-                        <i class="fa-solid fa-user-plus mr-1.5"></i> Đăng Ký
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+            <button id="google-login" class="w-full py-3 bg-white border border-gray-200 hover:bg-gray-50 active:scale-98 text-gray-700 rounded-xl font-medium text-sm transition-all shadow-sm cursor-pointer flex items-center justify-center gap-3">
+                <img src="https://www.google.com/favicon.ico" class="w-5 h-5" alt="Google">
+                Tiếp tục với Google
+            </button>
 
-    <!-- ========== APP CHÍNH ========== -->
-    <div id="app-screen" class="hidden min-h-screen flex flex-col">
-        <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
-            <div class="max-w-5xl mx-auto px-4 flex justify-between h-16 items-center">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div>
-                        <span class="text-sm font-bold text-white">PROXY VIP</span>
-                        <span class="block text-[8px] text-blue-400"><i class="fa-solid fa-circle text-[4px] animate-pulse mr-1"></i>ONLINE</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="text-right hidden sm:block">
-                        <span class="block text-[10px] text-slate-400" id="user-display"></span>
-                        <span class="text-[9px] font-bold text-emerald-400" id="account-status">Thường</span>
-                    </div>
-                    <button onclick="logout()" class="w-9 h-9 bg-slate-800 hover:bg-red-500/20 text-slate-400 hover:text-red-400 rounded-xl flex items-center justify-center cursor-pointer border border-slate-700">
-                        <i class="fa-solid fa-right-from-bracket text-xs"></i>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <div class="max-w-5xl mx-auto px-4 py-6 w-full flex-grow">
-            <div class="flex bg-slate-900 p-1 rounded-xl w-full max-w-md mb-8 mx-auto border border-slate-800">
-                <button onclick="switchTab('buy')" id="tab-btn-buy" class="flex-1 py-2.5 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer bg-blue-600 text-white">MUA</button>
-                <button onclick="switchTab('account')" id="tab-btn-account" class="flex-1 py-2.5 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer text-slate-400">TÀI KHOẢN</button>
-            </div>
-
-            <!-- TAB MUA -->
-            <div id="tab-buy" class="tab-content max-w-2xl mx-auto">
-                <div class="text-center mb-6">
-                    <i class="fa-solid fa-crown text-yellow-400 text-3xl mb-2"></i>
-                    <h3 class="text-lg font-bold text-white">TÀI KHOẢN VIP</h3>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <div onclick="selectPackage('vip3')" id="pkg-vip3" class="bg-slate-900 p-4 rounded-2xl border border-slate-800 hover:border-blue-500 cursor-pointer transition-all">
-                        <div class="flex justify-between"><span class="text-blue-400 text-xs font-bold">VIP</span><div class="pkg-check w-4 h-4 rounded-full border-2 border-slate-600 flex items-center justify-center"><div class="w-2 h-2 bg-blue-500 rounded-full scale-0 transition-transform"></div></div></div>
-                        <div class="text-lg font-bold text-white mt-1">3 NGÀY</div>
-                        <div class="pt-3 mt-3 border-t border-slate-800 text-emerald-400 font-bold">40.000 đ</div>
-                    </div>
-                    <div onclick="selectPackage('vip4')" id="pkg-vip4" class="bg-slate-900 p-4 rounded-2xl border border-slate-800 hover:border-blue-500 cursor-pointer transition-all">
-                        <div class="flex justify-between"><span class="text-blue-400 text-xs font-bold">VIP</span><div class="pkg-check w-4 h-4 rounded-full border-2 border-slate-600 flex items-center justify-center"><div class="w-2 h-2 bg-blue-500 rounded-full scale-0 transition-transform"></div></div></div>
-                        <div class="text-lg font-bold text-white mt-1">4 NGÀY</div>
-                        <div class="pt-3 mt-3 border-t border-slate-800 text-emerald-400 font-bold">60.000 đ</div>
-                    </div>
-                    <div onclick="selectPackage('vip20')" id="pkg-vip20" class="bg-slate-900 p-4 rounded-2xl border border-slate-800 hover:border-purple-500 cursor-pointer transition-all relative">
-                        <span class="absolute top-2 right-2 bg-purple-600 text-white text-[8px] px-2 py-0.5 rounded-full">HOT</span>
-                        <div class="flex justify-between"><span class="text-purple-400 text-xs font-bold">VIP</span><div class="pkg-check w-4 h-4 rounded-full border-2 border-slate-600 flex items-center justify-center"><div class="w-2 h-2 bg-purple-500 rounded-full scale-0 transition-transform"></div></div></div>
-                        <div class="text-lg font-bold text-white mt-1">20 NGÀY</div>
-                        <div class="pt-3 mt-3 border-t border-slate-800 text-emerald-400 font-bold">100.000 đ</div>
-                    </div>
-                    <div onclick="selectPackage('vip30')" id="pkg-vip30" class="bg-slate-900 p-4 rounded-2xl border border-slate-800 hover:border-blue-500 cursor-pointer transition-all">
-                        <div class="flex justify-between"><span class="text-blue-400 text-xs font-bold">VIP</span><div class="pkg-check w-4 h-4 rounded-full border-2 border-slate-600 flex items-center justify-center"><div class="w-2 h-2 bg-blue-500 rounded-full scale-0 transition-transform"></div></div></div>
-                        <div class="text-lg font-bold text-white mt-1">30 NGÀY</div>
-                        <div class="pt-3 mt-3 border-t border-slate-800 text-emerald-400 font-bold">120.000 đ</div>
-                    </div>
-                </div>
-
-                <div onclick="selectPackage('ob')" id="pkg-ob" class="bg-gradient-to-r from-slate-900 to-amber-900/20 p-5 rounded-2xl border border-amber-500/30 hover:border-amber-400 cursor-pointer transition-all mb-6">
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <i class="fa-solid fa-bolt text-amber-400 text-xl"></i>
-                            <div><span class="text-amber-400 text-xs font-bold">ONEBOX</span><div class="text-lg font-bold text-white">1 OB PROXY</div></div>
-                        </div>
-                        <div class="flex items-center gap-2"><span class="text-xl font-bold text-amber-400">300.000 đ</span><div class="pkg-check w-4 h-4 rounded-full border-2 border-slate-600 flex items-center justify-center"><div class="w-2 h-2 bg-amber-500 rounded-full scale-0 transition-transform"></div></div></div>
-                    </div>
-                </div>
-
-                <button id="btn-buy-package" onclick="openPaymentQR()" disabled class="w-full py-4 bg-slate-800 text-slate-500 rounded-xl font-bold text-sm flex items-center justify-center gap-2 cursor-not-allowed border border-slate-700">
-                    <i class="fa-solid fa-qrcode"></i> CHỌN GÓI ĐỂ HIỆN QR
-                </button>
-            </div>
-
-            <!-- TAB TÀI KHOẢN -->
-            <div id="tab-account" class="tab-content hidden max-w-2xl mx-auto">
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-3 text-white">
-                            <i class="fa-solid fa-user text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white" id="profile-email"></h3>
-                    </div>
-                    <div class="bg-slate-800 rounded-xl p-4 space-y-3">
-                        <div class="flex justify-between"><span class="text-xs text-slate-400">VIP</span><span id="profile-vip" class="text-xs font-bold px-3 py-1 rounded-full bg-slate-700">---</span></div>
-                        <div class="flex justify-between"><span class="text-xs text-slate-400">Hết hạn</span><span id="profile-expiry" class="text-xs font-bold text-white">---</span></div>
-                        <div class="flex justify-between"><span class="text-xs text-slate-400">OB</span><span id="profile-ob" class="text-xs font-bold text-white">0</span></div>
-                    </div>
-                    <button onclick="refreshAccountInfo()" class="w-full mt-4 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-xs cursor-pointer border border-slate-700">LÀM MỚI</button>
-                </div>
+            <div class="mt-6 text-center">
+                <p class="text-[10px] text-gray-400">
+                    Bằng cách đăng nhập, bạn đồng ý với <span class="text-blue-500">Điều khoản dịch vụ</span>
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- ========== MODAL QR ========== -->
-    <div id="qr-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 px-4">
-        <div class="bg-slate-900 w-full max-w-sm rounded-2xl p-6 border border-slate-700 shadow-2xl transform scale-95 transition-transform duration-300" id="qr-modal-container">
-            <div class="text-center">
-                <h4 class="text-lg font-bold text-white mb-1">QUÉT QR THANH TOÁN</h4>
-                <p class="text-xs text-slate-400" id="qr-package-name"></p>
-                <p class="text-xl font-bold text-emerald-400 mb-4" id="qr-package-price"></p>
-
-                <div class="relative inline-block bg-white p-3 rounded-xl mb-4">
-                    <div id="qr-loading" class="absolute inset-0 bg-white/95 rounded-xl flex flex-col items-center justify-center z-10">
-                        <div class="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                        <span class="text-[10px] text-slate-500">Đang tạo QR...</span>
-                    </div>
-                    <img id="qr-image" class="w-48 h-48 object-contain rounded-lg" src="" onload="document.getElementById('qr-loading').style.display='none'" onerror="document.getElementById('qr-loading').style.display='none'">
-                </div>
-
-                <div class="bg-slate-800 rounded-xl p-4 space-y-2 text-left text-xs">
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span class="text-slate-400">Ngân hàng</span><span class="font-bold text-white">VIETTINBANK</span></div>
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span class="text-slate-400">Số TK</span><div class="flex items-center gap-2"><span class="font-bold text-white">888890895666</span><button onclick="copyText('888890895666')" class="text-slate-500 hover:text-blue-400"><i class="fa-regular fa-copy"></i></button></div></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Nội dung</span><div class="flex items-center gap-2"><span id="qr-memo" class="font-bold text-amber-400 text-[11px]"></span><button onclick="copyText(document.getElementById('qr-memo').innerText)" class="text-slate-500 hover:text-blue-400"><i class="fa-regular fa-copy"></i></button></div></div>
-                </div>
-
-                <p class="text-[9px] text-amber-300 mt-4"><i class="fa-solid fa-circle-info mr-1"></i>Tự động kích hoạt sau khi nhận tiền</p>
-                <button onclick="closeQRModal()" class="w-full mt-4 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-xs cursor-pointer border border-slate-700">ĐÓNG</button>
-            </div>
+    <div id="loading-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-6 w-64 text-center">
+            <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+            <p class="text-sm font-semibold text-gray-700">Đang xử lý...</p>
         </div>
     </div>
 
-    <!-- ========== TOAST ========== -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[11px] px-4 py-2.5 rounded-full opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-1.5 z-50 border border-slate-700">
-        <i class="fa-solid fa-circle-check text-emerald-400"></i><span id="toast-msg"></span>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-    <script>
-        // ===== DỮ LIỆU GÓI =====
-        const PKG = {
-            vip3:{name:"VIP 3 NGÀY",price:40000,days:3,type:'vip'},
-            vip4:{name:"VIP 4 NGÀY",price:60000,days:4,type:'vip'},
-            vip20:{name:"VIP 20 NGÀY",price:100000,days:20,type:'vip'},
-            vip30:{name:"VIP 30 NGÀY",price:120000,days:30,type:'vip'},
-            ob:{name:"1 OB PROXY",price:300000,days:0,type:'ob'}
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO4z_CJBNbL6-JWXS42foF6dwKVQj403I",
+            authDomain: "proxy-275.firebaseapp.com",
+            projectId: "proxy-275",
+            storageBucket: "proxy-275.firebasestorage.app",
+            messagingSenderId: "1019852776299",
+            appId: "1:1019852776299:web:f82f681236bc42e16ea22e",
+            measurementId: "G-HZBBYKZKRD"
         };
 
-        let currentUser = null;
-        let selectedPkg = null;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        // ===== KHỞI ĐỘNG =====
-        window.onload = () => {
-            const u = localStorage.getItem('proxy_user');
-            if(u){ currentUser=u; showApp(); refreshInfo(); }
-        };
+        const loadingModal = document.getElementById('loading-modal');
+        const googleBtn = document.getElementById('google-login');
 
-        // ===== ĐĂNG NHẬP =====
-        window.handleLogin = () => {
-            const email = document.getElementById('auth-email').value.trim().toLowerCase();
-            const pass = document.getElementById('auth-password').value.trim();
-            if(!email||!pass) return toast('Vui lòng nhập đầy đủ thông tin');
-
-            const users = JSON.parse(localStorage.getItem('proxy_users')||'{}');
-            if(!users[email]) return toast('Tài khoản không tồn tại!');
-            if(users[email].password !== pass) return toast('Sai mật khẩu!');
-
-            currentUser = email;
-            localStorage.setItem('proxy_user', email);
-            showApp();
-            refreshInfo();
-        };
-
-        // ===== ĐĂNG KÝ =====
-        window.handleRegister = () => {
-            const email = document.getElementById('auth-email').value.trim().toLowerCase();
-            const pass = document.getElementById('auth-password').value.trim();
-            if(!email||!pass) return toast('Vui lòng nhập đầy đủ thông tin');
-            if(pass.length < 4) return toast('Mật khẩu tối thiểu 4 ký tự');
-
-            const users = JSON.parse(localStorage.getItem('proxy_users')||'{}');
-            if(users[email]) return toast('Email đã được đăng ký!');
-
-            users[email] = { password:pass, vipExpiry:null, obCount:0 };
-            localStorage.setItem('proxy_users', JSON.stringify(users));
-
-            currentUser = email;
-            localStorage.setItem('proxy_user', email);
-            toast('Đăng ký thành công!');
-            showApp();
-            refreshInfo();
-        };
-
-        // ===== HIỂN THỊ APP =====
-        function showApp(){
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('app-screen').classList.remove('hidden');
-            document.getElementById('user-display').innerText = currentUser;
-            document.getElementById('profile-email').innerText = currentUser;
-            switchTab('buy');
+        function showLoading() {
+            loadingModal.classList.remove('hidden');
         }
 
-        // ===== LOGOUT =====
-        window.logout = () => {
-            localStorage.removeItem('proxy_user');
-            currentUser=null; selectedPkg=null;
-            document.getElementById('auth-screen').classList.remove('hidden');
-            document.getElementById('app-screen').classList.add('hidden');
-            document.getElementById('auth-email').value='';
-            document.getElementById('auth-password').value='';
-            resetSelection();
-        };
-
-        // ===== LẤY DATA USER =====
-        function getUserData(){
-            const users = JSON.parse(localStorage.getItem('proxy_users')||'{}');
-            return users[currentUser] || {vipExpiry:null,obCount:0};
+        function hideLoading() {
+            loadingModal.classList.add('hidden');
         }
 
-        // ===== REFRESH INFO =====
-        window.refreshAccountInfo = () => {
-            const d = getUserData();
-            const now = new Date();
-            const exp = d.vipExpiry ? new Date(d.vipExpiry) : null;
-            const isVip = exp && exp > now;
-            const el = document.getElementById('profile-vip');
-            el.innerText = isVip ? 'ACTIVE' : 'CHƯA CÓ';
-            el.className = isVip ? 'text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400' : 'text-xs font-bold px-3 py-1 rounded-full bg-slate-700 text-slate-400';
-            document.getElementById('profile-expiry').innerText = exp ? exp.toLocaleDateString('vi-VN') : '---';
-            document.getElementById('profile-ob').innerText = d.obCount||0;
-            document.getElementById('account-status').innerText = isVip ? 'VIP' : 'Thường';
-            document.getElementById('account-status').className = isVip ? 'text-[9px] font-bold text-emerald-400' : 'text-[9px] font-bold text-slate-500';
+        googleBtn.onclick = async () => {
+            showLoading();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const email = result.user.email;
+                const displayName = result.user.displayName;
+                
+                localStorage.setItem('user_email', email);
+                localStorage.setItem('user_name', displayName);
+                
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                hideLoading();
+                alert('Đăng nhập thất bại: ' + error.message);
+            }
         };
 
-        // ===== CHỌN GÓI =====
-        window.selectPackage = (id) => {
-            selectedPkg = id;
-            document.querySelectorAll('.pkg-check div').forEach(d=>d.classList.add('scale-0'));
-            document.querySelectorAll('[id^="pkg-"]').forEach(c=>c.classList.remove('border-blue-500','border-purple-500','border-amber-400','ring-2'));
-            const card = document.getElementById('pkg-'+id);
-            const p = PKG[id];
-            card.classList.add(p.type==='ob'?'border-amber-400 ring-2 ring-amber-500/20':p.days===20?'border-purple-500 ring-2 ring-purple-500/20':'border-blue-500 ring-2 ring-blue-500/20');
-            card.querySelector('.pkg-check div').classList.remove('scale-0');
-            const btn = document.getElementById('btn-buy-package');
-            btn.disabled=false;
-            btn.className='w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 cursor-pointer';
-            btn.innerHTML = `<i class="fa-solid fa-qrcode"></i> THANH TOÁN ${p.price.toLocaleString('vi-VN')}đ`;
-        };
-
-        function resetSelection(){
-            selectedPkg=null;
-            document.querySelectorAll('.pkg-check div').forEach(d=>d.classList.add('scale-0'));
-            document.querySelectorAll('[id^="pkg-"]').forEach(c=>c.classList.remove('border-blue-500','border-purple-500','border-amber-400','ring-2'));
-            const btn=document.getElementById('btn-buy-package');
-            btn.disabled=true;
-            btn.className='w-full py-4 bg-slate-800 text-slate-500 rounded-xl font-bold text-sm flex items-center justify-center gap-2 cursor-not-allowed border border-slate-700';
-            btn.innerHTML='<i class="fa-solid fa-qrcode"></i> CHỌN GÓI ĐỂ HIỆN QR';
+        if (localStorage.getItem('user_email')) {
+            window.location.href = 'dashboard.html';
         }
-
-        // ===== QR =====
-        window.openPaymentQR = () => {
-            if(!selectedPkg) return;
-            const p = PKG[selectedPkg];
-            document.getElementById('qr-package-name').innerText = p.name;
-            document.getElementById('qr-package-price').innerText = p.price.toLocaleString('vi-VN')+'đ';
-            document.getElementById('qr-memo').innerText = currentUser;
-            document.getElementById('qr-loading').style.display='flex';
-            document.getElementById('qr-image').src = `https://api.sepay.vn/qr/vietinbank?account=888890895666&amount=${p.price}&memo=${encodeURIComponent(currentUser)}`;
-            const modal=document.getElementById('qr-modal');
-            modal.classList.remove('hidden');
-            requestAnimationFrame(()=>{ modal.classList.remove('opacity-0'); document.getElementById('qr-modal-container').classList.remove('scale-95'); });
-        };
-
-        window.closeQRModal = () => {
-            const modal=document.getElementById('qr-modal');
-            modal.classList.add('opacity-0');
-            document.getElementById('qr-modal-container').classList.add('scale-95');
-            setTimeout(()=>{ modal.classList.add('hidden'); document.getElementById('qr-image').src=''; },150);
-        };
-
-        // ===== TAB =====
-        window.switchTab = (id) => {
-            document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden'));
-            document.getElementById('tab-'+id).classList.remove('hidden');
-            ['buy','account'].forEach(t=>{
-                const btn=document.getElementById('tab-btn-'+t);
-                btn.className = t===id ? 'flex-1 py-2.5 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer bg-blue-600 text-white' : 'flex-1 py-2.5 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer text-slate-400';
-            });
-            if(id==='account') refreshAccountInfo();
-        };
-
-        // ===== UTILS =====
-        window.copyText = (txt) => {
-            navigator.clipboard.writeText(txt).then(()=>toast('Đã sao chép!')).catch(()=>{
-                const i=document.createElement('input'); i.value=txt; document.body.appendChild(i); i.select(); document.execCommand('copy'); document.body.removeChild(i); toast('Đã sao chép!');
-            });
-        };
-
-        function toast(msg){
-            const t=document.getElementById('toast');
-            document.getElementById('toast-msg').innerText=msg;
-            t.classList.remove('opacity-0','pointer-events-none');
-            clearTimeout(t._t);
-            t._t=setTimeout(()=>t.classList.add('opacity-0','pointer-events-none'),2000);
-        }
-
-        // Chặn chuột phải
-        document.oncontextmenu = () => false;
     </script>
 </body>
 </html>
